@@ -1,0 +1,4 @@
+<VirtualHost *:80>
+  DocumentRoot /var/www/vagrant/
+  DirectoryIndex index.html
+</VirtualHost>

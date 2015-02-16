@@ -1,0 +1,41 @@
+---
+- hosts: all
+
+  tasks:
+
+    - name: Install apache
+      apt: pkg=apache2
+      sudo: yes
+      notify:
+      - Disable default VirtualHost
+      - Copy VirtualHost configuration
+      - Enable VirtualHost
+      - Set ServerName
+      - Link resources
+      - Restart apache
+
+  handlers:
+
+    - name: Disable default VirtualHost
+      shell: a2dissite 000-default
+      sudo: yes
+
+    - name: Copy VirtualHost configuration
+      copy: src=resources/VirtualHost dest=/etc/apache2/sites-available/jenkins.conf owner=www-data group=www-data
+      sudo: yes
+
+    - name: Enable VirtualHost
+      shell: a2ensite jenkins
+      sudo: yes
+
+    - name: Set ServerName
+      lineinfile: dest=/etc/apache2/apache2.conf line="ServerName localhost"
+      sudo: yes
+
+    - name: Link resources
+      file: src=/vagrant dest=/var/www/vagrant owner=www-data group=www-data state=link
+      sudo: yes
+
+    - name: Restart apache
+      service: name=apache2 state=restarted
+      sudo: yes
