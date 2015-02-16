@@ -1,13 +1,13 @@
 var configs = [
     {
-        ci_json_url:"http://localhost:8081/jenkins/",
+        ci_json_url:"http://localhost:8080/",
         refresh_interval: 24000,
         radiatorTitle: 'Sample 1',
         excludeFilter: [],
         includeFilter: ["build1","build2"]
     },
     {
-        ci_json_url:"http://localhost:8081/jenkins/",
+        ci_json_url:"http://localhost:8080/",
         refresh_interval: 24000,
         radiatorTitle: 'Sample 2',
         excludeFilter: [],

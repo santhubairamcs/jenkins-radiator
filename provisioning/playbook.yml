@@ -34,7 +34,6 @@
       - Enable VirtualHost
       - Set ServerName
       - Link resources
-      - Enable apache module
       - Restart apache
 
   handlers:
@@ -51,8 +50,8 @@
       register: response
       always_run: yes
       until: response.status == 200
-      retries: 30
-      delay: 10
+      retries: 12
+      delay: 5
 
     - name: Retrieve Jenkins CLI
       get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest=/home/vagrant
@@ -91,13 +90,6 @@
 
     - name: Link resources
       file: src=/vagrant dest=/var/www/vagrant owner=www-data group=www-data state=link
-      sudo: yes
-
-    - name: Enable apache module
-      apache2_module: name={{ item }}
-      with_items:
-      - proxy_http
-      - headers
       sudo: yes
 
     - name: Restart apache

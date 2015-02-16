@@ -24,3 +24,13 @@ test("Job view renders and has expected title", function(){
     view.render();
     ok(JR.ViewHelpers.viewContains(view.el, "Abdera-trunk"));
 });
+
+test("Job view renders and has expected url", function(){
+    var job = new JR.Job(json.jobs[0]);
+    ok(job);
+    equal(job.getUrl(), 'https://builds.apache.org/job/Abdera-trunk/');
+    var view  = new JR.JobView({"model":job});
+    ok(view);
+    view.render();
+    ok(JR.ViewHelpers.viewContains(view.el, "https://builds.apache.org/job/Abdera-trunk/"));
+});
