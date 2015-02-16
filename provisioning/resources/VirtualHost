@@ -1,4 +1,20 @@
 <VirtualHost *:80>
-  DocumentRoot /var/www/vagrant/
-  DirectoryIndex index.html
+        DocumentRoot /var/www/vagrant/
+        DirectoryIndex index.html
+
+        ProxyRequests Off
+
+        AllowEncodedSlashes NoDecode
+
+        ProxyPass /jenkins/ http://localhost:8080/
+        ProxyPassReverse /jenkins/ http://localhost:8080/
+
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+                Require all granted
+        </Directory>
+
+        RequestHeader set X-Forwarded-Proto "http"
+        RequestHeader set X-Forwarded-Port "8081"
 </VirtualHost>

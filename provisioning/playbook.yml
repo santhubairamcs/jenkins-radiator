@@ -2,6 +2,28 @@
 - hosts: all
 
   tasks:
+    - name: Install Jenkins key
+      apt_key: url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key state=present
+      sudo: yes
+
+    - name: Update source.list
+      lineinfile: dest=/etc/apt/sources.list line="deb http://pkg.jenkins-ci.org/debian binary/"
+      sudo: yes
+
+    - name: Update apt cache
+      apt: update_cache=yes
+      sudo: yes
+
+    - name: Install Jenkins
+      apt: pkg=jenkins state=latest
+      sudo: yes
+      notify:
+      - Restart Jenkins
+      - Wait for port to be available
+      - Wait for Jenkins to start
+      - Retrieve Jenkins CLI
+      - Copy job configuration
+      - Create job
 
     - name: Install apache
       apt: pkg=apache2
@@ -12,9 +34,44 @@
       - Enable VirtualHost
       - Set ServerName
       - Link resources
+      - Enable apache module
       - Restart apache
 
   handlers:
+
+    - name: Restart Jenkins
+      service: name=jenkins state=restarted
+      sudo: yes
+
+    - name: Wait for port to be available
+      wait_for: port=8080
+
+    - name: Wait for Jenkins to start
+      uri: url=http://localhost:8080 return_content=yes
+      register: response
+      always_run: yes
+      until: response.status == 200
+      retries: 30
+      delay: 10
+
+    - name: Retrieve Jenkins CLI
+      get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest=/home/vagrant
+
+    - name: Copy job configuration
+      copy: src=resources/{{ item }} dest=/home/vagrant/{{ item }}
+      with_items:
+      - build1
+      - build2
+      - build3
+      - build4
+
+    - name: Create job
+      shell: java -jar /home/vagrant/jenkins-cli.jar -s http://localhost:8080/ create-job {{ item }} < /home/vagrant/{{ item }}
+      with_items:
+      - build1
+      - build2
+      - build3
+      - build4
 
     - name: Disable default VirtualHost
       shell: a2dissite 000-default
@@ -34,6 +91,13 @@
 
     - name: Link resources
       file: src=/vagrant dest=/var/www/vagrant owner=www-data group=www-data state=link
+      sudo: yes
+
+    - name: Enable apache module
+      apache2_module: name={{ item }}
+      with_items:
+      - proxy_http
+      - headers
       sudo: yes
 
     - name: Restart apache
