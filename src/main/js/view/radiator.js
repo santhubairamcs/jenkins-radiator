@@ -17,7 +17,7 @@ JR.RadiatorView = Backbone.View.extend({
         this.$el.append(this.jobsPassingView.el);
 
         //This view is displayed if there are failing jobs
-        this.failingJobs = new JR.FailingJobs({failingJobs: this.model.getFailingJobs()});
+        this.failingJobs = new JR.FailingJobs({failingJobs: this.model.getFailingOrAbortedJobs()});
         this.jobsFailingView = new JR.JobsFailingView({model:this.failingJobs});
         this.jobsFailingView.render();
         this.$el.append(this.jobsFailingView.el);
@@ -26,7 +26,7 @@ JR.RadiatorView = Backbone.View.extend({
             includedJobCount: this.model.getIncludedJobsCount(),
             passingJobCount: this.model.getPassingJobsCount(),
             unstableJobCount: this.model.getUnstableJobsCount(),
-            failingJobCount: this.model.getFailingJobsCount(),
+            failingJobCount: this.model.getFailingOrAbortedJobsCount(),
             buildingJobCount: this.model.getBuildingJobsCount(),
             disabledJobCount: this.model.getDisabledJobsCount(),
             abortedJobCount: this.model.getAbortedJobsCount()
@@ -40,12 +40,12 @@ JR.RadiatorView = Backbone.View.extend({
             LOG.debug("Rendering radiator view from radiator model");
         }
         // Set this, associated view rerenders itself
-        this.failingJobs.set('failingJobs', this.model.getFailingJobs());
+        this.failingJobs.set('failingJobs', this.model.getFailingOrAbortedJobs());
         this.failingJobs.trigger('change');
 
         this.buildMetrics.set('includedJobCount', this.model.getIncludedJobsCount());
         this.buildMetrics.set('passingJobCount', this.model.getPassingJobsCount());
-        this.buildMetrics.set('failingJobCount', this.model.getFailingJobsCount());
+        this.buildMetrics.set('failingJobCount', this.model.getFailingOrAbortedJobsCount());
         this.buildMetrics.set('buildingJobCount', this.model.getBuildingJobsCount());
         this.buildMetrics.set('disabledJobCount', this.model.getDisabledJobsCount());
         this.buildMetrics.set('unstableJobCount', this.model.getUnstableJobsCount());

@@ -96,7 +96,9 @@ div.config table td, div.config table th
   line-height:64px;
 }
 
-
+.job-view.red_anime, .job-view.aborted{
+  background-color: lightgrey;
+}
 .job-view.red_anime, .job-view.red{
   background-color: red;
 }

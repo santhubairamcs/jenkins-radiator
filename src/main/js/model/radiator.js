@@ -160,11 +160,19 @@ JR.Radiator = Backbone.Model.extend({
     getAbortedJobsCount: function(){
         return this.getAbortedJobs().length;
     },
+    getFailingOrAbortedJobs: function(){
+        return this.getAbortedJobs().concat(this.get('failingJobs') || []);
+    },
+    getFailingOrAbortedJobsCount: function(){
+        return this.getFailingJobsCount() + this.getAbortedJobsCount();
+    },
     buildsAreFailing: function(){
         return this.getFailingJobsCount()>0;
     },
     buildsArePassing: function(){
         return !this.buildsAreFailing();
+    },
+    buildsAreFailingOrAborted: function(){
+        return this.getFailingJobsCount()>0 || this.getAbortedJobsCount()>0;
     }
-
 });
