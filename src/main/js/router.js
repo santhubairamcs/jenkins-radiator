@@ -15,9 +15,6 @@ function loadConfig() {
 	configs.forEach(function(entry) {
 	    if (entry.dynamicIncludeFilter === true) {
 	        getConfigFor(entry);
-	        setInterval(function () {
-	            getConfigFor(entry);
-	        }, 1000);
 	    }
 	});
 }
