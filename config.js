@@ -18,7 +18,10 @@ var configs = [
 ];
 
 function getConfigFor(config) {
-    config.includeFilter = [];
+    while (config.includeFilter.length) {
+        config.includeFilter.pop();
+    }
+
     $.get(config.dynamicIncludeFilterUrl, function (data) {
         $(data).find("entry").each(function () {
             var jobName = $(this).find("title").text().split(" ")[0];
@@ -27,11 +30,18 @@ function getConfigFor(config) {
     });
 }
 
-configs.forEach(function(entry) {
-    if (entry.dynamicIncludeFilter === true) {
-        getConfigFor(entry);
-    }
-});
+function loadConfig() {
+	configs.forEach(function(entry) {
+	    if (entry.dynamicIncludeFilter === true) {
+	        getConfigFor(entry);
+	        setInterval(function () {
+	            getConfigFor(entry);
+	        }, 1000);
+	    }
+	});
+}
+
+loadConfig();
 
 var config = configs[0];
 

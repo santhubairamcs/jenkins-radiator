@@ -7,6 +7,8 @@ JR.AppRouter = Backbone.Router.extend({
     },
     timers: [],
     clearAppUI: function(){
+        loadConfig();
+
         // Revert to default background color
         $('body').css("background-color", 'white');
         // Clear the container
