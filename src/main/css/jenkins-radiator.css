@@ -108,3 +108,7 @@ div.config table td, div.config table th
 .job-view.disabled{
     background-color: grey;
 }
+
+a.no-underline{
+	text-decoration: none;
+}

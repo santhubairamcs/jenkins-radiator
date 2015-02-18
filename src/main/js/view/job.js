@@ -7,7 +7,7 @@ JR.JobView = Backbone.View.extend({
     },
 
     render: function(){
-        var template = "<div class='span12'><span style=\"width:100%\"><a href=\"{{url}}\"><h1>{{name}}</h1></a></span></div>";
+        var template = "<div class='span12'><span style=\"width:100%\"><a class=\"no-underline\" href=\"{{url}}\"><h1>{{name}}</h1></a></span></div>";
         var json = this.model.toJSON();
         if(LOG.isTraceEnabled()){
             LOG.trace("Model as json: " + JSON.stringify(json));
