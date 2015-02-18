@@ -5,8 +5,8 @@ function getConfigFor(config) {
 
     $.ajax({
         type: 'GET',
-        url: config.dynamicIncludeFilterUrl,
-        dataType: 'json',
+        url: config.dynamicIncludeFilterUrl+"/api/json?jsonp=?",
+        dataType: 'jsonp',
         success: function(data) {
             $.each($(data.jobs), function(idx, obj) {
                 config.includeFilter.push(obj.name);

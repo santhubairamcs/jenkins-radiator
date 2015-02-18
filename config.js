@@ -13,7 +13,7 @@ var configs = [
         excludeFilter: [],
         includeFilter: [],
         dynamicIncludeFilter: true,
-        dynamicIncludeFilterUrl: "http://localhost:8081/radiator.json"
+        dynamicIncludeFilterUrl: "http://localhost:8080/"
     }
 ];
 
