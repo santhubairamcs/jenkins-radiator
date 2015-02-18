@@ -1,3 +1,27 @@
+function getConfigFor(config) {
+    while (config.includeFilter.length) {
+        config.includeFilter.pop();
+    }
+
+    $.get(config.dynamicIncludeFilterUrl, function (data) {
+        $(data).find("entry").each(function () {
+            var jobName = $(this).find("title").text().split(" ")[0];
+            config.includeFilter.push(jobName);
+        });
+    });
+}
+
+function loadConfig() {
+	configs.forEach(function(entry) {
+	    if (entry.dynamicIncludeFilter === true) {
+	        getConfigFor(entry);
+	        setInterval(function () {
+	            getConfigFor(entry);
+	        }, 1000);
+	    }
+	});
+}
+
 JR.AppRouter = Backbone.Router.extend({
     routes: {
         "":                     "help",
@@ -6,6 +30,7 @@ JR.AppRouter = Backbone.Router.extend({
         "radiator/:configIdx":  "radiator"  // #radiator/0
     },
     timers: [],
+
     clearAppUI: function(){
         loadConfig();
 
