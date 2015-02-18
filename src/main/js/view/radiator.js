@@ -58,7 +58,7 @@ JR.RadiatorView = Backbone.View.extend({
         return this;
     },
     renderHealth: function(){
-        if (this.model.buildsAreFailing()) {
+        if (this.model.buildsAreFailingOrAborted()) {
             this.jobsPassingView.$el.hide();
             this.jobsFailingView.$el.show();
             $('body').css("background-color", 'white');
@@ -69,7 +69,7 @@ JR.RadiatorView = Backbone.View.extend({
         }
     },
     renderAudio: function(){
-        if (this.model.buildsAreFailing() && this.lastSoundPlayed != "boo") {
+        if (this.model.buildsAreFailingOrAborted() && this.lastSoundPlayed != "boo") {
             this.lastSoundPlayed = "boo";
             $("audio#booing-audio")[0].play();
         }else if (this.model.buildsArePassing() && this.lastSoundPlayed != "cheer"){
