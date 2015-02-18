@@ -3,19 +3,24 @@ function getConfigFor(config) {
         config.includeFilter.pop();
     }
 
-    $.get(config.dynamicIncludeFilterUrl, function (data) {
-        $.each($(data.jobs), function(idx, obj) {
-			config.includeFilter.push(obj.name);
-		});
+    $.ajax({
+        type: 'GET',
+        url: config.dynamicIncludeFilterUrl,
+        dataType: 'json',
+        success: function(data) {
+            $.each($(data.jobs), function(idx, obj) {
+                config.includeFilter.push(obj.name);
+            });
+        }
     });
 }
 
 function loadConfig() {
-	configs.forEach(function(entry) {
-	    if (entry.dynamicIncludeFilter === true) {
-	        getConfigFor(entry);
-	    }
-	});
+    configs.forEach(function(entry) {
+        if (entry.dynamicIncludeFilter === true) {
+            getConfigFor(entry);
+        }
+    });
 }
 
 JR.AppRouter = Backbone.Router.extend({
