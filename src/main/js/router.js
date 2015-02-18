@@ -4,10 +4,9 @@ function getConfigFor(config) {
     }
 
     $.get(config.dynamicIncludeFilterUrl, function (data) {
-        $(data).find("entry").each(function () {
-            var jobName = $(this).find("title").text().split(" ")[0];
-            config.includeFilter.push(jobName);
-        });
+        $.each($(data.jobs), function(idx, obj) {
+			config.includeFilter.push(obj.name);
+		});
     });
 }
 
