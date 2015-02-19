@@ -36,6 +36,8 @@ JR.AppRouter = Backbone.Router.extend({
     timers: [],
 
     clearAppUI: function(){
+        loadConfig();
+
         // Revert to default background color
         $('body').css("background-color", 'white');
         // Clear the container
@@ -103,8 +105,6 @@ JR.AppRouter = Backbone.Router.extend({
         $('#footer').show();
 
         var fetchAndRender =  function(){
-            loadConfig();
-
             titleView.trigger('loading');
             buildServer.fetch({success: function(model, response){
                 if(LOG.isDebugEnabled()){
@@ -119,6 +119,7 @@ JR.AppRouter = Backbone.Router.extend({
             }, error: function(model, response){
                 LOG.error("Fetching build server model failed, radiator view not rendered. Model: " + JSON.stringify(model) + ", response: " + JSON.stringify(response));
             }});
+            loadConfig();
         };
         if(LOG.isDebugEnabled()){
             LOG.debug("Refreshing every " + config.refresh_interval/1000 + " seconds as specified by config.refresh_interval");
