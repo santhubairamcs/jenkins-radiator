@@ -24,6 +24,7 @@
       - Retrieve Jenkins CLI
       - Copy job configuration
       - Create job
+      - Create view
 
     - name: Install apache
       apt: pkg=apache2
@@ -63,6 +64,7 @@
       - build2
       - build3
       - build4
+      - view1
 
     - name: Create job
       shell: java -jar /home/vagrant/jenkins-cli.jar -s http://localhost:8080/ create-job {{ item }} < /home/vagrant/{{ item }}
@@ -71,6 +73,9 @@
       - build2
       - build3
       - build4
+
+    - name: Create view
+      shell: java -jar /home/vagrant/jenkins-cli.jar -s http://localhost:8080/ create-view sample < /home/vagrant/view1
 
     - name: Disable default VirtualHost
       shell: a2dissite 000-default

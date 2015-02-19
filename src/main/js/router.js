@@ -5,19 +5,22 @@ function getConfigFor(config) {
 
     $.ajax({
         type: 'GET',
-        url: config.dynamicIncludeFilterUrl+"/api/json?jsonp=?",
+        url: config.ci_json_url + "view/" + config.viewName + "/api/json?jsonp=?",
         dataType: 'jsonp',
         success: function(data) {
             $.each($(data.jobs), function(idx, obj) {
                 config.includeFilter.push(obj.name);
             });
+
+            LOG.debug("Loaded " + config.includeFilter.length + " jobs");
         }
     });
 }
 
 function loadConfig() {
     configs.forEach(function(entry) {
-        if (entry.dynamicIncludeFilter === true) {
+        if (entry.includeFilterByView === true) {
+            LOG.debug("Loading view based configuration: " + entry.radiatorTitle);
             getConfigFor(entry);
         }
     });
@@ -33,8 +36,6 @@ JR.AppRouter = Backbone.Router.extend({
     timers: [],
 
     clearAppUI: function(){
-        loadConfig();
-
         // Revert to default background color
         $('body').css("background-color", 'white');
         // Clear the container
@@ -102,6 +103,8 @@ JR.AppRouter = Backbone.Router.extend({
         $('#footer').show();
 
         var fetchAndRender =  function(){
+            loadConfig();
+
             titleView.trigger('loading');
             buildServer.fetch({success: function(model, response){
                 if(LOG.isDebugEnabled()){

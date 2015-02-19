@@ -12,8 +12,8 @@ var configs = [
         radiatorTitle: 'Sample 2',
         excludeFilter: [],
         includeFilter: [],
-        dynamicIncludeFilter: true,
-        dynamicIncludeFilterUrl: "http://localhost:8080/"
+        includeFilterByView: true,
+        viewName: "sample"
     }
 ];
 
