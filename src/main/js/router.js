@@ -36,8 +36,6 @@ JR.AppRouter = Backbone.Router.extend({
     timers: [],
 
     clearAppUI: function(){
-        loadConfig();
-
         // Revert to default background color
         $('body').css("background-color", 'white');
         // Clear the container
@@ -116,6 +114,8 @@ JR.AppRouter = Backbone.Router.extend({
                 }
                 titleView.trigger('loaded');
                 radiator.trigger('change');
+
+                loadConfig();
             }, error: function(model, response){
                 LOG.error("Fetching build server model failed, radiator view not rendered. Model: " + JSON.stringify(model) + ", response: " + JSON.stringify(response));
             }});
