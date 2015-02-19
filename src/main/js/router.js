@@ -119,7 +119,6 @@ JR.AppRouter = Backbone.Router.extend({
             }, error: function(model, response){
                 LOG.error("Fetching build server model failed, radiator view not rendered. Model: " + JSON.stringify(model) + ", response: " + JSON.stringify(response));
             }});
-            loadConfig();
         };
         if(LOG.isDebugEnabled()){
             LOG.debug("Refreshing every " + config.refresh_interval/1000 + " seconds as specified by config.refresh_interval");
