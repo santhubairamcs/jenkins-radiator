@@ -1,13 +1,13 @@
 function getConfigFor(config) {
-    while (config.includeFilter.length) {
-        config.includeFilter.pop();
-    }
-
     $.ajax({
         type: 'GET',
         url: config.ci_json_url + "view/" + config.viewName + "/api/json?jsonp=?",
         dataType: 'jsonp',
         success: function(data) {
+            while (config.includeFilter.length) {
+                config.includeFilter.pop();
+            }
+
             $.each($(data.jobs), function(idx, obj) {
                 config.includeFilter.push(obj.name);
             });
