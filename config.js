@@ -4,7 +4,7 @@ var configs = [
         refresh_interval: 24000,
         radiatorTitle: 'Sample 1',
         excludeFilter: [],
-        includeFilter: ["build1","build2"]
+        includeFilter: ["build01","build02"]
     },
     {
         ci_json_url:"http://localhost:8080/",

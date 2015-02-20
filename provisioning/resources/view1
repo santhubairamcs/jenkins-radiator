@@ -6,8 +6,8 @@
   <properties class="hudson.model.View$PropertyList"/>
   <jobNames>
     <comparator class="hudson.util.CaseInsensitiveComparator"/>
-    <string>build3</string>
-    <string>build4</string>
+    <string>build03</string>
+    <string>build04</string>
   </jobNames>
   <jobFilters/>
   <columns>

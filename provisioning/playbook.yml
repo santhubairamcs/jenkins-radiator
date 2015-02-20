@@ -1,6 +1,39 @@
 ---
 - hosts: all
 
+  vars:
+      build_config:
+      - { id: "01", exitStatus: 0}
+      - { id: "02", exitStatus: 1}
+      - { id: "03", exitStatus: 0}
+      - { id: "04", exitStatus: 0}
+      - { id: "05", exitStatus: 1}
+      - { id: "06", exitStatus: 0}
+      - { id: "07", exitStatus: 1}
+      - { id: "08", exitStatus: 0}
+      - { id: "09", exitStatus: 1}
+      - { id: "10", exitStatus: 0}
+      - { id: "11", exitStatus: 1}
+      - { id: "12", exitStatus: 0}
+      - { id: "13", exitStatus: 1}
+      - { id: "14", exitStatus: 0}
+      - { id: "15", exitStatus: 1}
+      - { id: "16", exitStatus: 0}
+      - { id: "17", exitStatus: 1}
+      - { id: "18", exitStatus: 0}
+      - { id: "19", exitStatus: 1}
+      - { id: "20", exitStatus: 0}
+      - { id: "21", exitStatus: 1}
+      - { id: "22", exitStatus: 0}
+      - { id: "23", exitStatus: 1}
+      - { id: "24", exitStatus: 0}
+      - { id: "25", exitStatus: 1}
+      - { id: "26", exitStatus: 0}
+      - { id: "27", exitStatus: 1}
+      - { id: "28", exitStatus: 0}
+      - { id: "29", exitStatus: 1}
+      - { id: "30", exitStatus: 0}
+
   tasks:
     - name: Install Jenkins key
       apt_key: url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key state=present
@@ -23,6 +56,7 @@
       - Wait for Jenkins to start
       - Retrieve Jenkins CLI
       - Copy job configuration
+      - Copy view configuration
       - Create job
       - Create view
 
@@ -58,21 +92,15 @@
       get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest=/home/vagrant
 
     - name: Copy job configuration
-      copy: src=resources/{{ item }} dest=/home/vagrant/{{ item }}
-      with_items:
-      - build1
-      - build2
-      - build3
-      - build4
-      - view1
+      template: src=resources/build dest=/home/vagrant/build{{ item.id }}
+      with_items: build_config
+
+    - name: Copy view configuration
+      copy: src=resources/view1 dest=/home/vagrant/view1
 
     - name: Create job
-      shell: java -jar /home/vagrant/jenkins-cli.jar -s http://localhost:8080/ create-job {{ item }} < /home/vagrant/{{ item }}
-      with_items:
-      - build1
-      - build2
-      - build3
-      - build4
+      shell: java -jar /home/vagrant/jenkins-cli.jar -s http://localhost:8080/ create-job build{{ item.id }} < /home/vagrant/build{{ item.id }}
+      with_items: build_config
 
     - name: Create view
       shell: java -jar /home/vagrant/jenkins-cli.jar -s http://localhost:8080/ create-view sample < /home/vagrant/view1

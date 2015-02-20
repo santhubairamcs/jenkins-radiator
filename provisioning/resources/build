@@ -23,8 +23,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>echo &quot;fail&quot;
-exit 1</command>
+      <command>echo &quot;exit with {{ item.exitStatus }}&quot;
+exit {{ item.exitStatus }}</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
